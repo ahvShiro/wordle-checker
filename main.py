@@ -1,15 +1,13 @@
 from colorama import Fore, Style
 from collections import OrderedDict
 
-# PEDE O NOME DO ARQUIVO DO DICIONÁRIO  
 while True:
-    dicio_palavras = input("Nome do arquivo do dicionário (txt): ")
+    dictionary = input("Nome do arquivo do dicionário (txt): ")
     try:
-        with open(dicio_palavras, 'r'):
+        with open(dictionary, 'r'):
             break
     except FileNotFoundError:
         continue
-
 
 letras_posicao_errada = []
 letras_posicao_certa = []
@@ -27,9 +25,10 @@ for i in range(1, 5 + 1):
     temp = input(f"{Fore.GREEN}Letras na posição certa [{i}ª coluna]: {Style.RESET_ALL}").upper()
     letras_posicao_certa.append("".join(OrderedDict.fromkeys(temp)))
 
+print(letras_posicao_errada)
 
 linhas = []
-with open(dicio_palavras, "r") as file:
+with open(dictionary, "r") as file:
     for i in file:
         i = i.strip()
         if len(i.strip()) == 5:
