@@ -1,56 +1,59 @@
-from colorama import Fore, Style
-from collections import OrderedDict
 
-while True:
-    dictionary = input("Nome do arquivo do dicionário (txt): ")
-    try:
-        with open(dictionary, 'r'):
-            break
-    except FileNotFoundError:
-        continue
+def carregar_dicionario(arquivo: str) -> list:
 
-letras_posicao_errada = []
-letras_posicao_certa = []
+    with open("dicio-br.txt", "r") as a:
+        linhas_do_arquivo = a.readlines()
 
-# PEDE LETRAS CINZAS
-letras_nao_na_palavra = input("Letras que não estão na palavra: ")
+    palavras_limpas = [linha.strip().upper() for linha in linhas_do_arquivo]
 
-# PEDE LETRAS AMARELAS
-for i in range(1, 5 + 1):
-    temp = input(f"{Fore.YELLOW}Letras na posição errada [{i}ª coluna]: {Style.RESET_ALL}").upper()
-    letras_posicao_errada.append("".join(OrderedDict.fromkeys(temp)))
+    palavras_cinco_letras = [palavra for palavra in palavras_limpas if len(palavra) == 5]
 
-# PEDE LETRAS VERDES
-for i in range(1, 5 + 1):
-    temp = input(f"{Fore.GREEN}Letras na posição certa [{i}ª coluna]: {Style.RESET_ALL}").upper()
-    letras_posicao_certa.append("".join(OrderedDict.fromkeys(temp)))
-
-print(letras_posicao_errada)
-
-linhas = []
-with open(dictionary, "r") as file:
-    for i in file:
-        i = i.strip()
-        if len(i.strip()) == 5:
-            linhas.append(i.upper())
+    return(palavras_cinco_letras)
 
 
-for palavra in linhas:
-    palavra_errada = False
+def input_usuario() -> tuple[list, list]:
+    palavras = []
+    status = []
 
-    # Descarta todas as palavras que contém letras cinzas
-    for letra_cinza in letras_nao_na_palavra:
-        if(letra_cinza in palavra):
-            palavra_errada = True
+    for i in range(6):
+
+        while True:
+            entrada_palavra = input(f"Digite a 1ª palavra: ")
+        
+            if len(entrada_palavra) != 5:
+                print("A palavra precisa ter 5 letras!")
+            else:
+                break
+
+        if entrada_palavra == "":
+            entrada_palavra = None
+            entrada_status = None
+            continue
+        
+        palavras.append(entrada_palavra)
+        
+        while True:
+            entrada_status = input(f"Digite o marcador da palavra (0: Cinza, 1: Amarelo, 2: Verde): ")
+
+            if len(entrada_status) != 5:
+                print("O número de marcadores deve condizer com o número de letras!")
+            else:
+                break
+
+        status.append(entrada_status)
     
-    # Descarta todas as palavras que não contém letras verdes ou amarelas
-    for letra_necessaria in "".join(letras_posicao_errada + letras_posicao_certa):
-        if(letra_necessaria not in palavra):
-            palavra_errada = True
-    
-    
+    return palavras, status
 
-    if(palavra_errada):
-        continue
 
-    print(palavra)
+
+def processar_restricoes(palavras: list, status: list):
+    return 0
+
+def filtrar_palavras(dicionario, letras_proibidas, letras_posicao_errada, letras_posicao_certa):
+    return 0
+
+def main():
+    return 0
+
+if __name__ == "__main__":
+    main()
