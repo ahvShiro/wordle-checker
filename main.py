@@ -92,7 +92,7 @@ def input_usuario() -> tuple[list, list]:
             continue
 
         while True:
-            estado = input(f"{GRAY}{BOLD}[0]{RESET}/{YELLOW}{BOLD}[1]{RESET}/{GREEN}{BOLD}[2]{RESET}): ").strip()
+            estado = input(f"{GRAY}{BOLD}[0]{RESET}/{YELLOW}{BOLD}[1]{RESET}/{GREEN}{BOLD}[2]{RESET}: ").strip()
             if len(estado) == 5 and all(c in "012" for c in estado):
                 break
             print(f"{RED}Status inválido! Digite 5 números (0, 1 ou 2).{RESET}")
