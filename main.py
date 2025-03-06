@@ -1,4 +1,3 @@
-
 def carregar_dicionario(arquivo: str) -> list:
 
     with open(arquivo, "r") as arq:
@@ -16,37 +15,23 @@ def input_usuario() -> tuple[list, list]:
     status = []
 
     for i in range(6):
+        palavra = input(f"Digite a palavra {i + 1} (ou pressione Enter para parar): ").strip().upper()
+        if not palavra:
+            break
 
-        while True:
-            entrada_palavra = input(f"Digite a {i + 1}ª palavra: ")
-        
-            if len(entrada_palavra) != 5:
-                print("A palavra precisa ter 5 letras!")
-            else:
-                break
+        estado = input(f"Digite o status da palavra {i + 1}: ").strip()
+        if len(estado) != len(palavra) or not estado.isdigit():
+            print("Status inválido! Deve conter apenas 5 números (0, 1 ou 2).")
+            return None, None
 
-        if entrada_palavra == "":
-            entrada_palavra = None
-            entrada_status = None
-            continue
-        
-        palavras.append(entrada_palavra)
-        
-        while True:
-            entrada_status = input(f"Digite o marcador da palavra (0: Cinza, 1: Amarelo, 2: Verde): ")
+        palavras.append(palavra)
+        status.append(estado)
 
-            if len(entrada_status) != 5:
-                print("O número de marcadores deve condizer com o número de letras!")
-            else:
-                break
-
-        status.append(entrada_status)
-    
     return palavras, status
 
 
-
-def processar_restricoes(palavra: list, status: list):
+def processar_restricoes(palavra: str, status: str):
+    # Change from 'list' to 'str' since you're passing strings, not lists
     letras_proibidas = set()
     posicoes_erradas = {}
     posicoes_certas = {}
@@ -55,7 +40,7 @@ def processar_restricoes(palavra: list, status: list):
         letra = palavra[posicao]
         status_letra = status[posicao]
 
-        match status_letra[posicao]:
+        match status_letra:
             case "0":
                 letras_proibidas.add(letra)
             
@@ -80,7 +65,7 @@ def filtrar_palavras(dicionario, letras_proibidas, letras_posicao_errada, letras
             continue
         
         # Pente palavras onde o verde não bate
-        if any(palavra[posicao] != letra for posicao, letra in letras_posicao_certa):
+        if any(palavra[posicao] != letra for posicao, letra in letras_posicao_certa.items()):
             continue
 
         valido = True
@@ -106,13 +91,35 @@ def main():
     if not palavras or not status:
         return
     
-    
-
     dicionario = carregar_dicionario(input("Digite o nome do arquivo do dicionário (em .txt): "))
-
-    letras_proibidas, letras_posicao_errada, letras_posicao_certa = processar_restricoes(palavras, status)
-
-    palavras_filtradas = filtrar_palavras(dicionario, letras_proibidas, letras_proibidas, letras_posicao_errada, letras_posicao_certa)
+    
+    letras_proibidas_total = set()
+    posicoes_erradas_total = {}
+    posicoes_certas_total = {}
+    
+    for i in range(len(palavras)):
+        letras_proibidas, posicoes_erradas, posicoes_certas = processar_restricoes(palavras[i], status[i])
+        
+        letras_proibidas_total.update(letras_proibidas)
+        
+        for letra, posicoes in posicoes_erradas.items():
+            if letra not in posicoes_erradas_total:
+                posicoes_erradas_total[letra] = set()
+            posicoes_erradas_total[letra].update(posicoes)
+        
+        posicoes_certas_total.update(posicoes_certas)
+    
+    for posicao, letra in posicoes_certas_total.items():
+        if letra in letras_proibidas_total:
+            letras_proibidas_total.remove(letra)
+    
+    palavras_filtradas = filtrar_palavras(dicionario, letras_proibidas_total, posicoes_erradas_total, posicoes_certas_total)
+    
+    print(f"Encontradas {len(palavras_filtradas)} palavras possíveis:")
+    if len(palavras_filtradas) <= 20:
+        print(palavras_filtradas)
+    else:
+        print(f"Mostrando as primeiras 20 palavras: {palavras_filtradas[:20]}")
 
 if __name__ == "__main__":
     main()
