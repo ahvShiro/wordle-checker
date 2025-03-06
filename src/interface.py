@@ -138,7 +138,6 @@ class Interface:
     @staticmethod
     def selecionar_dicionario(data_dir):
         """Allow user to select a dictionary file from available options."""
-        print(f"\n{Colors.CYAN}Carregando dicionário...{Colors.RESET}")
         
         arquivos_disponiveis = [f for f in os.listdir(data_dir) if os.path.isfile(os.path.join(data_dir, f))]
 
@@ -146,11 +145,13 @@ class Interface:
         for idx, arquivo in enumerate(arquivos_disponiveis, start=1):
             print(f"{idx}. {arquivo}")
 
-        escolha = input(f"Escolha o número do arquivo de dicionário (padrão: 1): ").strip()
+        escolha = input(f"Escolha o número do arquivo de dicionário (padrão: palavras.txt): ").strip()
+
+        print(f"\n{Colors.CYAN}Carregando dicionário...{Colors.RESET}")
+
         if escolha.isdigit() and 1 <= int(escolha) <= len(arquivos_disponiveis):
             arquivo = os.path.join(data_dir, arquivos_disponiveis[int(escolha) - 1])
         else:
-            arquivo = os.path.join(data_dir, "dicionario.txt")
+            arquivo = os.path.join(data_dir, "palavras.txt")
         
         return arquivo
-
