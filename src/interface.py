@@ -1,5 +1,5 @@
 import os
-from colors import Colors
+from src.colors import Colors
 
 SLANT_TITLE = """
  _       __               ____   

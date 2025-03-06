@@ -1,7 +1,7 @@
 import time
-from colors import Colors
-from interface import Interface
-from logic import Logic
+from src.colors import Colors
+from src.interface import Interface
+from src.logic import Logic
 
 def main():
     ui = Interface()
@@ -17,7 +17,7 @@ def main():
     
     print(f"\n{Colors.CYAN}Carregando dicionário...{Colors.RESET}")
     
-    arquivo = input(f"Nome do arquivo de dicionário (padrão: dicionario.txt): ").strip() or "dicionario.txt"
+    arquivo = "../data/" + input(f"Nome do arquivo de dicionário (selecionando de ../data/): ").strip() or "../data/dicionario.txt"
 
     if not logic.carregar_dicionario(arquivo):
         print(f"{Colors.RED}Arquivo não encontrado! Verifique o nome e o caminho.{Colors.RESET}")
