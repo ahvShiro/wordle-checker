@@ -15,12 +15,12 @@ O dicionário em português pode ser acessado em:
 Para instalar e rodar o Wordle Solver, você precisará ter o Git e o Python versão 3.10+ instalado no seu sistema
 
 ```bash
-git clone https://github.com/ahvShiro/wordle-checker.git
-cd wordle-checker
-python3 main.py
+> git clone https://github.com/ahvShiro/wordle-checker.git
+> cd wordle-solver/src
+> python3 main.py
 ```
 
-## Como usar?
+## Uso
 
 Ao rodar `python3 main.py`, siga as instruções do programa:
 
@@ -29,6 +29,7 @@ Ao rodar `python3 main.py`, siga as instruções do programa:
   - 0 para cinza (letras que não estão na palavra (em cinza)
   - 1 para amarelo (letras que estão na palavra, mas na posição errada)
   - 2 para verde (letras que estão na posição certa)
+- Digite o nome do dicionário localizado em `/data/`. Os dicionários disponíveis no repositório por padrão são dicionario.txt em português e dictionary.txt em inglês. (Sinta-se livre para adicionar dicionários em outras línguas!)
 - O programa irá automaticamente informar quais palavras no dicionário da lingua portuguesa se encaixam no termo!
 
 ## Prints
