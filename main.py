@@ -1,7 +1,7 @@
 
 def carregar_dicionario(arquivo: str) -> list:
 
-    with open("dicio-br.txt", "r") as arq:
+    with open(arquivo, "r") as arq:
         linhas_do_arquivo = arq.readlines()
 
     palavras_limpas = [linha.strip().upper() for linha in linhas_do_arquivo]
@@ -18,7 +18,7 @@ def input_usuario() -> tuple[list, list]:
     for i in range(6):
 
         while True:
-            entrada_palavra = input(f"Digite a 1ª palavra: ")
+            entrada_palavra = input(f"Digite a {i + 1}ª palavra: ")
         
             if len(entrada_palavra) != 5:
                 print("A palavra precisa ter 5 letras!")
