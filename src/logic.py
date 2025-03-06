@@ -5,19 +5,22 @@ class Logic:
         self.dicionario = []
     
     def carregar_dicionario(self, arquivo: str) -> bool:
-        """Carrega palavras de 5 letras do arquivo de dicionário."""
         try:
             with open(arquivo, "r") as arq:
                 linhas_do_arquivo = arq.readlines()
             
+            # stripa e uppa a linha tal que a linha tá em linhas_do_arquivo
             palavras_limpas = [linha.strip().upper() for linha in linhas_do_arquivo]
-            self.dicionario = [palavra for palavra in palavras_limpas if len(palavra) == 5]
+
+            # x tal que x em palavras_limpas e tamanho é 5
+            self.dicionario = [palavra for palavra in palavras_limpas if len(palavra) == 5] 
+
             return True
+        
         except FileNotFoundError:
             return False
 
     def processar_restricoes(self, palavra: str, status: str) -> Tuple[Set[str], Dict[str, Set[int]], Dict[int, str]]:
-        """Processa restrições de uma tentativa."""
         letras_proibidas = set()
         posicoes_erradas = {}
         posicoes_certas = {}
@@ -26,19 +29,24 @@ class Logic:
             letra = palavra[posicao]
             status_letra = status[posicao]
 
+            # cinza
             if status_letra == "0":
                 letras_proibidas.add(letra)
+
+            # amarelo
             elif status_letra == "1":
                 if letra not in posicoes_erradas:
                     posicoes_erradas[letra] = set()
                 posicoes_erradas[letra].add(posicao)
+            
+            # verde
             elif status_letra == "2":
                 posicoes_certas[posicao] = letra
                 
         return letras_proibidas, posicoes_erradas, posicoes_certas
 
+
     def filtrar_palavras(self, letras_proibidas, letras_posicao_errada, letras_posicao_certa):
-        """Filtra palavras do dicionário com base nas restrições."""
         palavras_validas = []
 
         for palavra in self.dicionario:

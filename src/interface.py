@@ -1,5 +1,5 @@
 import os
-from src.colors import Colors
+from colors import Colors
 
 SLANT_TITLE = """
  _       __               ____   
@@ -134,4 +134,23 @@ class Interface:
             for p in palavras_filtradas[:20]:
                 print(f" • {p}")
             print(f"...e mais {len(palavras_filtradas) - 20} palavras.")
+    
+    @staticmethod
+    def selecionar_dicionario(data_dir):
+        """Allow user to select a dictionary file from available options."""
+        print(f"\n{Colors.CYAN}Carregando dicionário...{Colors.RESET}")
+        
+        arquivos_disponiveis = [f for f in os.listdir(data_dir) if os.path.isfile(os.path.join(data_dir, f))]
+
+        print(f"{Colors.CYAN}Dicionários disponíveis:{Colors.RESET}")
+        for idx, arquivo in enumerate(arquivos_disponiveis, start=1):
+            print(f"{idx}. {arquivo}")
+
+        escolha = input(f"Escolha o número do arquivo de dicionário (padrão: 1): ").strip()
+        if escolha.isdigit() and 1 <= int(escolha) <= len(arquivos_disponiveis):
+            arquivo = os.path.join(data_dir, arquivos_disponiveis[int(escolha) - 1])
+        else:
+            arquivo = os.path.join(data_dir, "dicionario.txt")
+        
+        return arquivo
 

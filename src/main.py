@@ -1,43 +1,46 @@
+import os
 import time
-from src.colors import Colors
-from src.interface import Interface
-from src.logic import Logic
+from colors import Colors
+from interface import Interface
+from logic import Logic
 
 def main():
-    ui = Interface()
+    Interface.print_welcome()
+    
+    # instancias criadas
     logic = Logic()
+    ui = Interface()
     
-    ui.print_welcome()
-    
+    # input do usuário pego e armazenado em uma tupla com 2 listas ([palavras], [status])
     palavras, status = ui.input_usuario()
     
+    # se input não tiver palavras ou status, encerra o programa
     if not palavras or not status:
         print(f"{Colors.RED}Nenhuma palavra fornecida. Encerrando.{Colors.RESET}")
         return
     
-    print(f"\n{Colors.CYAN}Carregando dicionário...{Colors.RESET}")
-    
-    arquivo = "../data/" + input(f"Nome do arquivo de dicionário (selecionando de ../data/): ").strip() or "../data/dicionario.txt"
+    # define o caminho dos dicionarios
+    data_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
 
+    arquivo = ui.selecionar_dicionario(data_dir)
+
+    # se o arquivo não existir, encerra proframa
     if not logic.carregar_dicionario(arquivo):
         print(f"{Colors.RED}Arquivo não encontrado! Verifique o nome e o caminho.{Colors.RESET}")
         return
     
     print(f"{Colors.GREEN}Dicionário carregado com {len(logic.dicionario)} palavras de 5 letras!{Colors.RESET}")
     
-    # Consolidate constraints
     letras_proibidas, posicoes_erradas, posicoes_certas = logic.consolidar_restricoes(palavras, status)
     
-    # Show summary
     ui.mostrar_resumo_restricoes(letras_proibidas, posicoes_erradas, posicoes_certas)
     
     print(f"\n{Colors.CYAN}Procurando palavras possíveis...{Colors.RESET}")
-    time.sleep(0.5)  # Small delay for effect
+    time.sleep(1)  # delay dramatico
     
-    # Filter words
+    # filtra possiveis candidatos a resposta baseado nas restricoes consolidadas
     palavras_filtradas = logic.filtrar_palavras(letras_proibidas, posicoes_erradas, posicoes_certas)
     
-    # Show results
     ui.mostrar_resultados(palavras_filtradas)
 
 if __name__ == "__main__":
