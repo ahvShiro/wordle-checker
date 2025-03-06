@@ -20,7 +20,7 @@ Para instalar e rodar o Wordle Solver, você precisará ter o Git e o Python ver
 > python3 main.py
 ```
 
-## Uso
+## Como usar?
 
 Ao rodar `python3 main.py`, siga as instruções do programa:
 
